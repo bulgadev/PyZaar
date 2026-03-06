@@ -379,6 +379,9 @@ class MainWindow(QMainWindow):
 
         search_label = QLabel("Search:")
         search_label.setStyleSheet("font-size: 14px; color: #e0e0e0;")
+        self.warn_text = QLabel("You are not using a api key! Get one from hypixel developer portal, and put it on .env file as API_KEY")
+        self.warn_text.setStyleSheet("color: #e0e0e0; font-size: 16px; font-weight: bold;")
+        self.warn_text.hide()
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Type item name to search")
         self.search_input.setMinimumWidth(350)
@@ -412,6 +415,7 @@ class MainWindow(QMainWindow):
         top_bar.addWidget(search_label)
         top_bar.addWidget(self.search_input)
         top_bar.addStretch()
+        top_bar.addWidget(self.warn_text)
         top_bar.addWidget(self.bookmarks_btn)
         top_bar.addWidget(self.refresh_btn)
         main_layout.addLayout(top_bar)
@@ -580,6 +584,15 @@ class MainWindow(QMainWindow):
 
         try:
             bazaarFetch.invalidate_cache()
+            # Check if there is an API error before parsing items
+            raw_data = bazaarFetch.get_bazaar_data()
+            if isinstance(raw_data, dict) and raw_data.get('success') == False:
+                self.status_bar.showMessage(f"Error: {raw_data.get('cause', 'Unknown Error')}")
+                self.warn_text.setVisible(True)
+                self.table_model.set_data([])
+                return
+            
+            self.warn_text.setVisible(False)
             items = bazaarFetch.get_all_items_summary()
 
             # Filter out items with 0 buy AND 0 sell price

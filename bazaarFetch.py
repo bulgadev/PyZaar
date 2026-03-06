@@ -28,6 +28,10 @@ def get_bazaar_data():
     if _API_KEY:
         headers['API-Key'] = _API_KEY
 
+    if not _API_KEY:
+        print("No API key found")
+        return {'success': False, 'cause': 'No API key found'}
+
     # Retry up to 3 times if the API returns empty/invalid JSON
     for attempt in range(3):
         try:
