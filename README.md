@@ -4,6 +4,8 @@ Welcome to **PyZaar**, a desktop application built with Python and PySide6 desig
 
 This tool fetches real-time bazaar data from the Hypixel Skyblock API, processes the raw metrics into actionable insights (like margin percentages, volume stability, and spike detection), and presents it in a sleek, dark-themed, and highly filterable data grid.
 
+![alt text](./assets/PyZaarPic.png)
+
 ## Features
 
 - **Real-Time Data**: Fetches and caches live bazaar data directly from the Hypixel API.
